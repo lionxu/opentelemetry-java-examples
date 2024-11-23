@@ -8,10 +8,10 @@ package io.opentelemetry.example.http;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
-import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 /**
  * All SDK management takes place here, away from the instrumentation code, which should only access
@@ -28,7 +28,8 @@ class ExampleConfiguration {
   static OpenTelemetry initOpenTelemetry() {
     SdkTracerProvider sdkTracerProvider =
         SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+            .addSpanProcessor(
+                BatchSpanProcessor.builder(OtlpHttpSpanExporter.builder().build()).build())
             .build();
 
     OpenTelemetrySdk sdk =

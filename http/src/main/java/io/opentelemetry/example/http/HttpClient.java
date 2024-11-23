@@ -34,7 +34,7 @@ public final class HttpClient {
 
   private void makeRequest() throws IOException, URISyntaxException {
     int port = 8080;
-    URL url = new URL("http://127.0.0.1:" + port);
+    URL url = new URL("http://127.0.0.1:" + port + "/ping");
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
     int status = 0;
